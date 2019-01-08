@@ -277,9 +277,9 @@ function startBreak() {
 function endBreak() {
   if (config.allowIconTimeToBreak) {
   restIndicatorLeft = Math.floor(config.frequency);
-   chrome.browserAction.setBadgeText({
-     text: restIndicatorLeft.toString()
-   });
+  chrome.browserAction.setBadgeText({
+    text: restIndicatorLeft.toString()
+  });
   }
   chrome.windows.remove(breakId)
 }
