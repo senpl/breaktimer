@@ -337,7 +337,6 @@ function checkIdleMinutes() {
 function checkTimeStayMinutes() {
   if (config.allowIconTimeToBreak) {
     // Check if indicator icon is greater then one minute
-    console.log("extension test");
     if (typeof(restIndicatorLeft) === 'undefined') {
       restIndicatorStart = moment();
       restIndicatorLeft = Number(Math.floor(config.frequency) - 1);
@@ -345,7 +344,6 @@ function checkTimeStayMinutes() {
     } else {
       restIndicatorLeft = restIndicatorLeft - 1
     }
-    console.log(restIndicatorLeft);
     chrome.browserAction.setBadgeText({
       text: restIndicatorLeft.toString()
     });
