@@ -231,8 +231,10 @@ function getWorkingDayEnabled(day) {
 
 function handleAlarm(alarm) {
   if (alarm.name === "1min") {
+    // console.log("minutes started "+ restIndicatorLeft);
     checkTimeStayMinutes();
   } else {
+    // console.log("alarm normal Executed " + restIndicatorLeft);
     if (checkOutsideWorkingHours()) {
       createAlarm();
     } else if (config.idleResetEnabled && ['idle', 'locked'].indexOf(idleState) > -1 &&
@@ -240,6 +242,12 @@ function handleAlarm(alarm) {
       // Prevent breaks when we've been idle for more than
       // config.idleResetMinutes minutes
       createAlarm();
+      if (config.allowIconTimeToBreak) {
+        restIndicatorLeft = Math.floor(config.frequency);
+        chrome.browserAction.setBadgeText({
+          text: restIndicatorLeft.toString()
+        });
+      }
     } else {
       if (config.notificationType === 'N') {
         createNotification();
@@ -276,8 +284,8 @@ function startBreak() {
 
 function endBreak() {
   if (config.allowIconTimeToBreak) {
-  restIndicatorLeft = Math.floor(config.frequency);
-  chrome.browserAction.setBadgeText({
+    restIndicatorLeft = Math.floor(config.frequency);
+    chrome.browserAction.setBadgeText({
     text: restIndicatorLeft.toString()
   });
   }
