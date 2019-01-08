@@ -95,7 +95,7 @@ function createFullscreen() {
     function(breakWindow) {
       breakId = breakWindow.id;
       chrome.windows.update(breakWindow.id, {
-        state: 'fullscreen'
+        state: 'maximized'
       });
     }
   );
@@ -244,9 +244,7 @@ function handleAlarm(alarm) {
       createAlarm();
       if (config.allowIconTimeToBreak) {
         restIndicatorLeft = Math.floor(config.frequency);
-        chrome.browserAction.setBadgeText({
-          text: restIndicatorLeft.toString()
-        });
+        updateIconIndicator(restIndicatorLeft);
       }
     } else {
       if (config.notificationType === 'N') {
@@ -285,9 +283,7 @@ function startBreak() {
 function endBreak() {
   if (config.allowIconTimeToBreak) {
     restIndicatorLeft = Math.floor(config.frequency);
-    chrome.browserAction.setBadgeText({
-    text: restIndicatorLeft.toString()
-  });
+    updateIconIndicator(restIndicatorLeft);
   }
   chrome.windows.remove(breakId)
 }
@@ -352,18 +348,7 @@ function checkTimeStayMinutes() {
     } else {
       restIndicatorLeft = restIndicatorLeft - 1
     }
-    chrome.browserAction.setBadgeText({
-      text: restIndicatorLeft.toString()
-    });
-    if (restIndicatorLeft < -1) {
-      chrome.browserAction.setBadgeBackgroundColor({
-        color: "#F00"
-      });
-    } else {
-      chrome.browserAction.setBadgeBackgroundColor({
-        color: "#008000"
-      });
-    }
+    updateIconIndicator(restIndicatorLeft);
   }
 }
 
@@ -458,3 +443,18 @@ chrome.runtime.onMessage.addListener(
     sendResponse({success: true});
   }
 );
+
+function updateIconIndicator(restIndicatorLeft){
+  chrome.browserAction.setBadgeText({
+    text: restIndicatorLeft.toString()
+  });
+  if (restIndicatorLeft < -1) {
+    chrome.browserAction.setBadgeBackgroundColor({
+        color: "#F00"
+      });
+  } else {
+    chrome.browserAction.setBadgeBackgroundColor({
+      color: "#008000"
+    });
+  }
+}
